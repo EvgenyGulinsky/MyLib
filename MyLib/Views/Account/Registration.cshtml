@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 center-block text-center">
+            <form method="post" action="/Account/Registration">
+                <table>
+                    <tr>
+                        <td>Введите никнейм: </td>
+                        <td><input type="text" name="Nickname" /></td>
+                    </tr>
+                    <tr>
+                        <td>Введите e-mail: </td>
+                        <td> <input type="email" name="Email" /></td>
+                    </tr>
+                    <tr>
+                        <td>Введите пароль: </td>
+                        <td><input type="password" name="Pass" /></td>
+                    </tr>
+                    <tr>
+                        <td></td><td><input type="submit" value="Регистрация" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+

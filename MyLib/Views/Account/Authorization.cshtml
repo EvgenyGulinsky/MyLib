@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Authorization";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Авторизация</h2>
+        @using (Html.BeginForm("Authorization", "Account", FormMethod.Post))
+        {
+        <table>
+            <tr>
+                <td>Введите e-mail: </td>
+                <td><input type="email" name="email" /></td>
+            </tr>
+            <tr>
+                <td>введите пароль: </td>
+                <td><input type="password" name="pass" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <h5 style="color:red">@ViewBag.Massage</h5>
+                    <p><input type="submit" class="btn btn-default" value="Вход" /></p>
+                </td>
+            </tr>
+        </table>
+        }
+    </div>
+</div>
+

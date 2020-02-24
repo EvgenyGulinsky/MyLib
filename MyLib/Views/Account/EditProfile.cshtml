@@ -1,0 +1,71 @@
+﻿
+@using MyLib.Models
+@{
+    User au = (User) Session["AuthorizedUser"];
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditProfile</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Редактор профиля</h4>
+    <hr />
+    <div class="form-group">
+        <label class="control-label col-md-2">E-mail</label>
+        <div class="col-md-10">
+            <input type="email" class="form-control" name="email" value="@au.Email" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Никнейм</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" name="nickname" value="@au.Nickname" />
+        </div>
+    </div>
+
+    <hr />
+    <h5>Подтвердите внесение изменений</h5>
+    <div class="form-group">
+        <lable class="control-label col-md-2">Введите пароль</lable>
+        <div class="col-md-10">
+            <input type="password" name="pass" />
+        </div>
+    </div>
+
+    <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapsePass" aria-expanded="false" aria-controls="collapseExample">
+        Изменить пароль
+    </button>
+    <div class="collapse" id="collapsePass">
+        <div class="form-group">
+            <lable class="control-label col-md-2">Новый пароль</lable>
+            <div class="col-md-10">
+                <input type="password" name="NewPass" />
+            </div>
+        </div>
+        <div class="form-group">
+            <lable class="control-label col-md-2">Подтвердите</lable>
+            <div class="col-md-10">
+                <input type="password" name="NewPass2" />
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <h4 style="color:red">@ViewBag.Massage</h4>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Home")
+</div>
