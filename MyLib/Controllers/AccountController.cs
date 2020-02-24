@@ -23,6 +23,9 @@ namespace MyLib.Controllers
             if (user != null)
             {
                 LibContext db = new LibContext();
+                user.BooksFromTheShelf = new Bookshelf();
+                user.FinishedBooks = new FinishedBooks();
+                user.DesiredBooks = new DesiredBooks();                
                 db.Users.Add(user);
                 db.SaveChanges();
                 Session["AuthorizedUser"] = db.Users.Last();

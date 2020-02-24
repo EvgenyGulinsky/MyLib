@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Bookshelf.cs" />
+    <Compile Include="Models\Context\BookDisplay.cs" />
     <Compile Include="Models\Context\LibContext.cs" />
     <Compile Include="Models\DesiredBooks.cs" />
     <Compile Include="Models\FinishedBooks.cs" />
@@ -188,6 +189,7 @@
     <Content Include="Views\Account\Authorization.cshtml" />
     <Content Include="Views\Book\AllBooks.cshtml" />
     <Content Include="Views\Book\Add.cshtml" />
+    <Content Include="Views\Book\Bookshelf.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
