@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyLib.Models;
+using MyLib.Models.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +12,7 @@ namespace MyLib.Controllers
     {
         [HttpGet]
         public ActionResult Index()
-        {
+        {            
             return View();
         }     
         

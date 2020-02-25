@@ -1,4 +1,5 @@
-﻿using MyLib.Models;
+﻿
+using MyLib.Models;
 using MyLib.Models.Context;
 using System;
 using System.Collections.Generic;
@@ -23,12 +24,10 @@ namespace MyLib.Controllers
             if (user != null)
             {
                 LibContext db = new LibContext();
-                user.BooksFromTheShelf = new Bookshelf();
-                user.FinishedBooks = new FinishedBooks();
-                user.DesiredBooks = new DesiredBooks();                
                 db.Users.Add(user);
                 db.SaveChanges();
-                Session["AuthorizedUser"] = db.Users.Last();
+                Session["Nickname"] = user.Nickname;
+                Session["Id"] = db.Users.Where(u => u.Nickname == user.Nickname).FirstOrDefault().UserId;
             }
             return Redirect("/Home/Index");
         }
@@ -47,14 +46,15 @@ namespace MyLib.Controllers
             try
             {
                 User user = (User)db.Users.Where(u => u.Email.Equals(email)).First();
-                if(!user.Pass.Equals(pass))
+                if (!user.Pass.Equals(pass))
                 {
                     ViewBag.Massage = "Неправильный пароль";
                     return View();
                 }
-                Session["AuthorizedUser"] = user;
+                Session["Nickname"] = user.Nickname;
+                Session["Id"] = user.UserId;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.Massage = "Такой e-mail не зарегистрирован";
                 return View();
@@ -68,23 +68,24 @@ namespace MyLib.Controllers
             return View();
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public ActionResult EditProfile(string email, string nikname, string pass, string NewPass, string NewPass2)
         {
             User au = (User)Session["AuthorizedUser"];
-            if(!au.Pass.Equals(pass))
+            if (!au.Pass.Equals(pass))
             {
                 ViewBag.Massage = "Неправильный пароль";
                 return View();
-            } else
+            }
+            else
             {
-                LibContext db = new LibContext();
+                TestLibContext db = new TestLibContext();
                 if (NewPass != null && NewPass2 != null)
                     if (NewPass.Equals(NewPass2))
                     {
                         au.Pass = NewPass;
                         au.Nickname = nikname;
-                        au.Email = email;                        
+                        au.Email = email;
                         db.Entry(au).State = EntityState.Modified;
                         db.SaveChanges();
                         return Redirect("/Home/Index");
@@ -101,6 +102,6 @@ namespace MyLib.Controllers
                 db.SaveChanges();
                 return Redirect("/Home/Index");
             }
-        }
+        }*/
     }
 }

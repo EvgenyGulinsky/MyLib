@@ -7,20 +7,14 @@ using System.Web;
 
 namespace MyLib.Models
 {
-    public class LentBooks
+    public class Debtor
     {
         [Key]
+        [ForeignKey("UserBook")]
         public int Id { get; set; }
+        public UserBook UserBook { get; set; }
+
         public string WhoTook { get; set; }
         public DateTime Date { get; set; }
-
-        [ForeignKey("Book")]
-        public int BookId { get; set; }
-        public Book Book { get; set; }
-
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User User { get; set; }
-        
     }
 }

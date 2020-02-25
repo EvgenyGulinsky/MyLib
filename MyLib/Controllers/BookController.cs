@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,22 +31,29 @@ namespace MyLib.Controllers
         [HttpPost]
         public ActionResult Add(Book book, string[] state)
         {
-            if(db.Books.Where(b => b.Name == book.Name).FirstOrDefault() != null)
+            if (db.Books.Where(b => b.Name == book.Name).FirstOrDefault() != null)
             {
                 ViewBag.Massage = "Книга с таким названием уже существует";
                 return View();
             }
-            else if(state == null)
+            else if (state == null)
             {
                 ViewBag.Massage = "Вы не выбрали сотояние книги на момент внесения в базу";
                 return View();
             }
-            User user = (User)Session["AuthorizedUser"];
-            if (state.Contains("IsHave")) user.BooksFromTheShelf.bookshelf.Add(book);
-            if (state.Contains("Readed")) user.FinishedBooks.finishedBooks.Add(book);
-            if (state.Contains("Desired")) user.DesiredBooks.desiredBooks.Add(book);
-          
             db.Books.Add(book);
+            db.SaveChanges();
+
+            int id = int.Parse(Session["Id"].ToString());
+            User user = db.Users.Where(u => u.UserId == id).FirstOrDefault();
+
+            UserBook ub = new UserBook(user, book);
+
+            if (state.Contains("IsHave")) ub.OnShelf = true;
+            if (state.Contains("Readed")) ub.Readed = true;
+            if (state.Contains("Desired")) ub.Desired = true;
+
+            db.UserBooks.Add(ub);
             db.SaveChanges();
             return Redirect("/Book/Bookshelf");
         }
@@ -53,23 +61,9 @@ namespace MyLib.Controllers
         [HttpGet]
         public ActionResult Bookshelf()
         {
-            User user = (User)Session["AuthorizedUser"];
-            List<BookDisplay> books = new List<BookDisplay>();
-            foreach (Book book in db.Books.ToList())
-            {
-                BookDisplay bd = new BookDisplay();
-                if (user.BooksFromTheShelf.bookshelf.Contains(book)) { bd.Book = book; bd.InHave = true; }
-                if (user.FinishedBooks.finishedBooks.Contains(book)) { bd.Book = book; bd.Readed = true; }
-                foreach (LentBooks lb in user.LentBooks)
-                {
-                    if (lb.Book == book)
-                    {
-                        bd.LentBook = lb;
-                        break;
-                    }
-                }
-                if (bd.Book != null) books.Add(bd);
-            }
+            int id = int.Parse(Session["Id"].ToString());
+            List<UserBook> books = new List<UserBook>();
+            books.AddRange(db.UserBooks.Where(ub => ub.UserId == id).Include("Book"));
             ViewBag.Books = books;
             return View();
         }

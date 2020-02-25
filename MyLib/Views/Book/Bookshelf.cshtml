@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyLib.Models.Context.BookDisplay>
+﻿@using MyLib.Models;
 
 @{
     ViewBag.Title = "Bookshelf";
@@ -9,30 +9,28 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.InHave)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Readed)
-        </th>
+        <th>Название</th>
+        <th>Автор</th>
+        <th>Описание</th>
         <th></th>
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.InHave)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Readed)
-        </td>
-        <td><!--
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                -->
-        </td>
-    </tr>
-}
+    @if (ViewBag.Books == null)
+    {
+        <h2 style="color:dodgerblue">Книжная полка пока пустая</h2>}
+    @foreach (UserBook item in ViewBag.Books)
+    {
+        <tr>
+            <td>@item.Book.Name</td>
+            <td>@item.Book.Author</td>
+            <td>@item.Book.Description</td>
+            <td>
+                <!--
+                @Html.ActionLink("Изменить заметки", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Уже прочитал", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Книга была возвращена", "Delete", new { /* id=item.PrimaryKey */ })
+                    -->
+            </td>
+        </tr>
+    }
 
 </table>

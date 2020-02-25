@@ -19,7 +19,8 @@
         </th>
         <th></th>
     </tr>
-
+    @if (ViewBag.Books == null)
+    { <h2 style="color:dodgerblue">В базе пока нет ни одной книги</h2> }
 @foreach (Book book in ViewBag.Books) {
     <tr>
         <td>
@@ -29,7 +30,7 @@
             @book.Author
         </td>
         <td>
-            @book.Note
+            @book.Description
         </td>
         <td>
             <!--

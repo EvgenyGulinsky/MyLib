@@ -1,7 +1,7 @@
 ﻿@using MyLib.Models
 @{ 
-    User ua = null;
-    if (Session["AuthorizedUser"] != null) { ua = (User)Session["AuthorizedUser"]; }
+    string Nickname = null;
+    if (Session["Nickname"] != null) { Nickname = Session["Nickname"].ToString(); }
 }
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@
                 </button>
                 @Html.ActionLink("MyLib", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            @if (ua != null)
+            @if (Nickname != null)
             {
                 <div class="navbar-left">
                     <ul class="nav navbar-nav">
@@ -40,7 +40,7 @@
 
                 <div class="navbar-right" align="right">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink(ua.Nickname, "EditProfile", "Account")</li>
+                        <li>@Html.ActionLink(Nickname, "EditProfile", "Account")</li>
                         <li>@Html.ActionLink("Выход", "Exit", "Account")</li>
                     </ul>
                 </div>
