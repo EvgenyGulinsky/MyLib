@@ -187,6 +187,9 @@
     <Content Include="Views\Book\AllBooks.cshtml" />
     <Content Include="Views\Book\Add.cshtml" />
     <Content Include="Views\Book\Bookshelf.cshtml" />
+    <Content Include="Views\Book\Finished.cshtml" />
+    <Content Include="Views\Book\Lent.cshtml" />
+    <Content Include="Views\Book\Desired.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

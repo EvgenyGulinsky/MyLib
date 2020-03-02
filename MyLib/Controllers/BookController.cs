@@ -16,7 +16,7 @@ namespace MyLib.Controllers
         [HttpGet]
         public ActionResult AllBooks()
         {
-            IEnumerable<Book> Books = db.Books;
+            IEnumerable<Book> Books = db.Books.Include("UserBook");
             ViewBag.Books = Books;
             return View();
         }
@@ -62,8 +62,52 @@ namespace MyLib.Controllers
         public ActionResult Bookshelf()
         {
             int id = int.Parse(Session["Id"].ToString());
+            List<UserBook> books = db.UserBooks.Where(ub => ub.UserId == id).
+                                    Union(db.UserBooks.Where(ub => ub.Readed == true).
+                                    Include("Book").
+                                    Include("Note").
+                                    Include("Debtor")).
+                                    ToList();
+            ViewBag.Books = books;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Finished()
+        {
+            int id = int.Parse(Session["Id"].ToString());
+            List<UserBook> books = db.UserBooks.Where(ub => ub.UserId == id).
+                                    Union(db.UserBooks.Where(ub => ub.Readed == true).
+                                    Include("Book").
+                                    Include("Note").
+                                    Include("Debtor")).
+                                    ToList();
+            ViewBag.Books = books;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Lent()
+        {
+            int id = int.Parse(Session["Id"].ToString());
             List<UserBook> books = new List<UserBook>();
-            books.AddRange(db.UserBooks.Where(ub => ub.UserId == id).Include("Book"));
+            foreach(UserBook ub in db.UserBooks.Where(ub => ub.UserId == id).Include("Debtor"))
+            {
+                if (ub.Debtor != null) books.Add(ub);
+            }
+            ViewBag.Books = books;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Desired()
+        {
+            int id = int.Parse(Session["Id"].ToString());
+            List<UserBook> books = new List<UserBook>();
+            foreach (UserBook ub in db.UserBooks.Where(ub => ub.UserId == id).Include("Debtor"))
+            {
+                if (ub.Desired) books.Add(ub);
+            }
             ViewBag.Books = books;
             return View();
         }

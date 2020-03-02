@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "AllBooks";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = int.Parse(Session["Id"].ToString());
 }
 
 <h2>Книжная база</h2>
@@ -32,12 +33,26 @@
         <td>
             @book.Description
         </td>
+        <!---->
         <td>
-            <!--
-            @Html.ActionLink("Edit", "Edit", new { id=book.BookId }) |
-            @Html.ActionLink("Details", "Details", new { id=book.BookId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=book.BookId })-->
+            @if (book.UserBooks.Where(u => u.UserId == id).FirstOrDefault() != null)
+            {
+                UserBook ub = book.UserBooks.Where(u => u.UserId == id).FirstOrDefault();
+                if (ub.OnShelf)
+                {<p>Имеется</p>}
+                if (ub.Readed)
+                {<p>Прочитано</p>}
+                if (ub.Desired)
+                {<p>Желаемая</p>}
+                @Html.ActionLink("Подробнее", "BookInfo", new { id = book.BookId })
+            }
+            else
+            {
+                @Html.ActionLink("В желаемое", "AddToWishes", new { id = book.BookId })
+                @Html.ActionLink("Подробнее", "BookInfo", new { id = book.BookId })
+            }
         </td>
+        <!---->
     </tr>
 }
 

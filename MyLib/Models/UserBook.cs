@@ -29,7 +29,15 @@ namespace MyLib.Models
         {
             User = user;
             Book = book;
+            OnShelf = false;
+            Readed = false;
+            Desired = false;
         }
-        public UserBook() { }
+        public UserBook()
+        {
+            OnShelf = false;
+            Readed = false;
+            Desired = false;
+        }
     }
 }

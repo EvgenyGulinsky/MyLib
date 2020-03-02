@@ -12,6 +12,8 @@ namespace MyLib.Controllers
 {
     public class AccountController : Controller
     {
+        LibContext db = new LibContext();
+
         [HttpGet]
         public ActionResult Registration()
         {
@@ -23,7 +25,6 @@ namespace MyLib.Controllers
         {
             if (user != null)
             {
-                LibContext db = new LibContext();
                 db.Users.Add(user);
                 db.SaveChanges();
                 Session["Nickname"] = user.Nickname;
@@ -42,33 +43,33 @@ namespace MyLib.Controllers
         [HttpPost]
         public ActionResult Authorization(string email, string pass)
         {
-            LibContext db = new LibContext();
-            try
-            {
-                User user = (User)db.Users.Where(u => u.Email.Equals(email)).First();
-                if (!user.Pass.Equals(pass))
-                {
-                    ViewBag.Massage = "Неправильный пароль";
-                    return View();
-                }
-                Session["Nickname"] = user.Nickname;
-                Session["Id"] = user.UserId;
-            }
-            catch (Exception e)
+            User user = db.Users.Where(u => u.Email == email).FirstOrDefault();
+            if(user == null)
             {
                 ViewBag.Massage = "Такой e-mail не зарегистрирован";
                 return View();
+            }else
+            if (!user.Pass.Equals(pass))
+            {
+                ViewBag.Massage = "Неправильный пароль";
+                return View();
             }
+            Session["Nickname"] = user.Nickname;
+            Session["Id"] = user.UserId;
+            
             return Redirect("/Home/Index");
         }
 
         [HttpGet]
         public ActionResult EditProfile()
         {
+            int id = int.Parse(Session["Id"].ToString());
+            User user = db.Users.Where(u => u.UserId == id).FirstOrDefault();
+            ViewBag.User = user;
             return View();
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public ActionResult EditProfile(string email, string nikname, string pass, string NewPass, string NewPass2)
         {
             User au = (User)Session["AuthorizedUser"];
@@ -79,7 +80,6 @@ namespace MyLib.Controllers
             }
             else
             {
-                TestLibContext db = new TestLibContext();
                 if (NewPass != null && NewPass2 != null)
                     if (NewPass.Equals(NewPass2))
                     {
@@ -102,6 +102,6 @@ namespace MyLib.Controllers
                 db.SaveChanges();
                 return Redirect("/Home/Index");
             }
-        }*/
+        }
     }
 }
