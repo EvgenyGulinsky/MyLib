@@ -1,0 +1,68 @@
+﻿@model MyLib.Models.UserBook
+
+@{
+    ViewBag.Title = "BookInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>BookInfo</h2>
+
+<div>
+    <h4>UserBook</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Book.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Debtor.WhoTook)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Debtor.WhoTook)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note.UserNote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Note.UserNote)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OnShelf)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OnShelf)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Readed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Readed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Desired)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Desired)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

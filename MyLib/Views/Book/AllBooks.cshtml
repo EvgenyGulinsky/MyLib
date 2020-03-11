@@ -2,58 +2,77 @@
 @{
     ViewBag.Title = "AllBooks";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int id = int.Parse(Session["Id"].ToString());
+    string id = Session["Id"] == null ? null : Session["Id"].ToString();
 }
 
 <h2>Книжная база</h2>
+<hr />
 
-<table class="table">
-    <tr>
-        <th>
-            Название
-        </th>
-        <th>
-            Автор
-        </th>
-        <th>
-            Краткое описание
-        </th>
-        <th></th>
-    </tr>
+<div class="row-cols-2">
     @if (ViewBag.Books == null)
-    { <h2 style="color:dodgerblue">В базе пока нет ни одной книги</h2> }
-@foreach (Book book in ViewBag.Books) {
-    <tr>
-        <td>
-            @book.Name
-        </td>
-        <td>
-            @book.Author
-        </td>
-        <td>
-            @book.Description
-        </td>
-        <!---->
-        <td>
-            @if (book.UserBooks.Where(u => u.UserId == id).FirstOrDefault() != null)
-            {
-                UserBook ub = book.UserBooks.Where(u => u.UserId == id).FirstOrDefault();
-                if (ub.OnShelf)
-                {<p>Имеется</p>}
-                if (ub.Readed)
-                {<p>Прочитано</p>}
-                if (ub.Desired)
-                {<p>Желаемая</p>}
-                @Html.ActionLink("Подробнее", "BookInfo", new { id = book.BookId })
-            }
-            else
-            {
-                @Html.ActionLink("В желаемое", "AddToWishes", new { id = book.BookId })
-                @Html.ActionLink("Подробнее", "BookInfo", new { id = book.BookId })
-            }
-        </td>
-        <!---->
-    </tr>
-}
+    {
+        <h2 style="color:dodgerblue">В базе пока нет ни одной книги</h2>
+    }
+    else
+    {
+        foreach (Book book in ViewBag.Books)
+        {
+            <div class="col" style="padding:5px;">
+                <div class="card text-center">
+                    <div class="card-body block">
+                        <h5 class="card-title">@book.Author</h5>
+                        <h5>@book.Name</h5>
 
-</table>
+                        <div class="card-header block__hidden">
+                            <p class="card-text">
+                                @book.Description
+                            </p>
+                            <hr />
+                            @if (id != null)
+                            {
+                                UserBook ub = book.UserBooks.Where(u => u.UserId == int.Parse(id)).FirstOrDefault();
+                                if (ub != null)
+                                {
+                                    /*if (ub.Debtor != null)
+                                    {
+                                        <table>
+                                            <tr>
+                                                <th>Заемщик: </th>
+                                                <td>@ub.Debtor.WhoTook</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Дата: </th>
+                                                <td>@ub.Debtor.Date</td>
+                                            </tr>
+                                        </table>
+                                    }*/
+                                    <table>
+                                        <tr>
+                                            @if (ub.OnShelf)
+                                            {
+                                                <td>Имеется |</td>}
+                                            @if (ub.Readed)
+                                            {
+                                                <td>Прочитано |</td>}
+                                            @if (ub.Desired)
+                                            {
+                                                <td>Желаемое</td>}
+                                            <td>@Html.ActionLink("Подробнее", "BookInfo", new { id = book.BookId })</td>
+                                        </tr>
+                                    </table>
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("В желаемое", "AddToWishes", new { id = book.BookId })
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+
+</div>
+

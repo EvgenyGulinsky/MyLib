@@ -7,30 +7,59 @@
 
 <h2>Книжная полка</h2>
 
-<table class="table">
-    <tr>
-        <th>Название</th>
-        <th>Автор</th>
-        <th>Описание</th>
-        <th></th>
-    </tr>
-    @if (ViewBag.Books == null)
-    {
-        <h2 style="color:dodgerblue">Книжная полка пока пустая</h2>}
-    @foreach (UserBook item in ViewBag.Books)
-    {
+@if (ViewBag.Books == null)
+{
+    <h2 style="color:dodgerblue">Книжная полка пока пустая</h2>}
+else
+{
+    <table class="table">
         <tr>
-            <td>@item.Book.Name</td>
-            <td>@item.Book.Author</td>
-            <td>@item.Book.Description</td>
-            <td>
-                <!--
-                @Html.ActionLink("Изменить заметки", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Уже прочитал", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Книга была возвращена", "Delete", new { /* id=item.PrimaryKey */ })
-                    -->
-            </td>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Описание</th>
+            <th>Заметки</th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (UserBook item in ViewBag.Books)
+        {
+            if (item.OnShelf)
+            {
+                <tr>
+                    <td>@item.Book.Name</td>
+                    <td>@item.Book.Author</td>
+                    <td>@item.Book.Description</td>
+                    <td>@if (item.Note != null) { item.Note.UserNote}</td>
+                    <td>
+                        @Html.ActionLink("Изменить заметки", "EditNote", new { id = item.BookId }) |
+
+                        @if (item.Readed)
+                        {<p>уже прочитано</p>}
+                        else
+                        { @Html.ActionLink("Прочитали?", "Details", new { id = item.BookId })} |
+
+                        @if (item.Debtor != null)
+                        {
+                            <table>
+                                <tr>
+                                    <th>Заёмщик: </th>
+                                    <td>@item.Debtor.WhoTook</td>
+                                </tr>
+                                <tr>
+                                    <th>Дата: </th>
+                                    <td>@item.Debtor.Date.Date</td>
+                                    <th></th>
+                                    <td>@Html.ActionLink("Книга была возвращена", "Delete", new { id = item.BookId })</td>
+                                </tr>
+                            </table>
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Кто-то взял почитать", "Delete", new { id = item.BookId })
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+}

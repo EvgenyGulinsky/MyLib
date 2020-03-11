@@ -7,33 +7,30 @@
 
 <h2>Desired</h2>
 
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>Название</th>
-        <th>Автор</th>
-        <th>Описание</th>
-        <th></th>
-    </tr>
-    @if (ViewBag.Books == null)
-    {
-        <h2 style="color:dodgerblue">Список желаемых книг пуст</h2>}
-    @foreach (UserBook item in ViewBag.Books)
-    {
+@if (ViewBag.Books == null)
+{
+    <h2 style="color:dodgerblue">Список желаемых книг пуст</h2>}
+else
+{
+    <table class="table">
         <tr>
-            <td>@item.Book.Name</td>
-            <td>@item.Book.Author</td>
-            <td>@item.Book.Description</td>
-            <td>
-                <!--
-                @Html.ActionLink("Изменить заметки", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Уже прочитал", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Книга была возвращена", "Delete", new { /* id=item.PrimaryKey */ })
-                    -->
-            </td>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Описание</th>
+            <th></th>
         </tr>
-    }
-</table>
+        @foreach (UserBook item in ViewBag.Books)
+        {
+            <tr>
+                <td>@item.Book.Name</td>
+                <td>@item.Book.Author</td>
+                <td>@item.Book.Description</td>
+                <td>
+                    @Html.ActionLink("Изменить заметки", "Edit", new { id = item.BookId }) |
+                    @Html.ActionLink("Уже прочитал", "Details", new { id = item.BookId }) |
+                    @Html.ActionLink("Книга была возвращена", "Delete", new { id = item.BookId })
+                </td>
+            </tr>
+        }
+    </table>
+}

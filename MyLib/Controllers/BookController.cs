@@ -16,7 +16,7 @@ namespace MyLib.Controllers
         [HttpGet]
         public ActionResult AllBooks()
         {
-            IEnumerable<Book> Books = db.Books.Include("UserBook");
+            IEnumerable<Book> Books = db.Books.Include("UserBooks");
             ViewBag.Books = Books;
             return View();
         }
@@ -95,6 +95,7 @@ namespace MyLib.Controllers
             {
                 if (ub.Debtor != null) books.Add(ub);
             }
+            if (books.Count == 0) books = null;
             ViewBag.Books = books;
             return View();
         }
@@ -108,7 +109,21 @@ namespace MyLib.Controllers
             {
                 if (ub.Desired) books.Add(ub);
             }
+            if (books.Count == 0) books = null;
             ViewBag.Books = books;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult BookInfo(int id)
+        {
+            UserBook book = db.UserBooks.Where(ub => ub.BookId == id).
+                                    Union(db.UserBooks.Where(ub => ub.Readed == true).
+                                    Include("Book").
+                                    Include("Note").
+                                    Include("Debtor")).
+                                    FirstOrDefault();                                  
+            ViewBag.Book = book;            
             return View();
         }
     }
